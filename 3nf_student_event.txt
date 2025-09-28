@@ -1,0 +1,50 @@
+CREATE DATABASE student_event;
+
+CREATE TABLE Event (
+    event_id INT PRIMARY KEY,
+    event_name VARCHAR(100),
+    event_date DATE,
+    event_time TIME,
+    location VARCHAR(150),
+    event_type VARCHAR(50),
+    description TEXT
+);
+
+CREATE TABLE Organizer (
+    organizer_id INT PRIMARY KEY,
+    full_name VARCHAR(100),
+    position VARCHAR(100),
+    email VARCHAR(100),
+    phone_number VARCHAR(20),
+    department VARCHAR(100)
+);
+
+CREATE TABLE Participant (
+    participant_id INT PRIMARY KEY,
+    full_name VARCHAR(100),
+    role VARCHAR(50),
+    email VARCHAR(100),
+    phone_number VARCHAR(20),
+    faculty VARCHAR(100)
+);
+
+CREATE TABLE Resource (
+    resource_id INT PRIMARY KEY,
+    resource_name VARCHAR(100),
+    resource_type VARCHAR(50),
+    status VARCHAR(50),
+    responsible_id INT,
+    FOREIGN KEY (responsible_id) REFERENCES Organizer(organizer_id)
+);
+
+CREATE TABLE Task (
+    task_id INT PRIMARY KEY,
+    task_name VARCHAR(100),
+    description TEXT,
+    due_date DATE,
+    status VARCHAR(50),
+    responsible_id INT,
+    event_id INT,
+    FOREIGN KEY (responsible_id) REFERENCES Organizer(organizer_id),
+    FOREIGN KEY (event_id) REFERENCES Event(event_id)
+);

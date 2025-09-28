@@ -1,0 +1,103 @@
+CREATE DATABASE student_event_vault;
+
+CREATE TABLE Hub_Event (
+    event_id INT PRIMARY KEY
+);
+
+CREATE TABLE Hub_Organizer (
+    organizer_id INT PRIMARY KEY
+);
+
+CREATE TABLE Hub_Participant (
+    participant_id INT PRIMARY KEY
+);
+
+CREATE TABLE Hub_Resource (
+    resource_id INT PRIMARY KEY
+);
+
+CREATE TABLE Hub_Task (
+    task_id INT PRIMARY KEY
+);
+
+CREATE TABLE Lnk_EventOrganizer (
+    link_event_organizer_id INT PRIMARY KEY,
+    event_id INT NOT NULL REFERENCES Hub_Event(event_id),
+    organizer_id INT NOT NULL REFERENCES Hub_Organizer(organizer_id)
+);
+
+CREATE TABLE Lnk_EventParticipant (
+    link_event_participant_id INT PRIMARY KEY,
+    event_id INT NOT NULL REFERENCES Hub_Event(event_id),
+    participant_id INT NOT NULL REFERENCES Hub_Participant(participant_id)
+);
+
+CREATE TABLE Lnk_EventResource (
+    link_event_resource_id INT PRIMARY KEY,
+    event_id INT NOT NULL REFERENCES Hub_Event(event_id),
+    resource_id INT NOT NULL REFERENCES Hub_Resource(resource_id)
+);
+
+CREATE TABLE Lnk_EventTask (
+    link_event_task_id INT PRIMARY KEY,
+    event_id INT NOT NULL REFERENCES Hub_Event(event_id),
+    task_id INT NOT NULL REFERENCES Hub_Task(task_id)
+);
+
+CREATE TABLE Lnk_TaskResponsible (
+    link_task_responsible_id INT PRIMARY KEY,
+    task_id INT NOT NULL REFERENCES Hub_Task(task_id),
+    organizer_id INT REFERENCES Hub_Organizer(organizer_id),
+    participant_id INT REFERENCES Hub_Participant(participant_id)
+);
+
+CREATE TABLE Sat_Event (
+    event_id INT NOT NULL REFERENCES Hub_Event(event_id),
+    event_name VARCHAR(100),
+    event_date DATE,
+    event_time TIME,
+    location VARCHAR(150),
+    event_type VARCHAR(50),
+    description TEXT
+);
+
+CREATE TABLE Sat_Organizer (
+    organizer_id INT NOT NULL REFERENCES Hub_Organizer(organizer_id),
+    full_name VARCHAR(100),
+    position VARCHAR(100),
+    email VARCHAR(100),
+    phone_number VARCHAR(20),
+    department VARCHAR(100)
+);
+
+CREATE TABLE Sat_Participant (
+    participant_id INT NOT NULL REFERENCES Hub_Participant(participant_id),
+    full_name VARCHAR(100),
+    role VARCHAR(50),
+    email VARCHAR(100),
+    phone_number VARCHAR(20),
+    faculty VARCHAR(100)
+);
+
+CREATE TABLE Sat_Resource (
+    resource_id INT NOT NULL REFERENCES Hub_Resource(resource_id),
+    resource_name VARCHAR(100),
+    resource_type VARCHAR(50),
+    status VARCHAR(50),
+    notes TEXT
+);
+
+CREATE TABLE Sat_Task (
+    task_id INT NOT NULL REFERENCES Hub_Task(task_id),
+    task_name VARCHAR(100),
+    description TEXT,
+    due_date DATE,
+    status VARCHAR(50)
+);
+
+CREATE TABLE Sat_TaskHistory (
+    task_id INT NOT NULL REFERENCES Hub_Task(task_id),
+    status_change_date TIMESTAMP,
+    old_status VARCHAR (50),
+    new_status VARCHAR (50)
+);
